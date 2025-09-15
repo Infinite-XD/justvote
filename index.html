@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Vote for Fatima!</title>
+  <title>Vote for Fatima Irfan!</title>
   <style>
     :root{
       --bg-1: #120023;
@@ -157,48 +157,43 @@
   <!-- Modal -->
   <div class="modal" id="voteModal" role="dialog" aria-modal="true" aria-labelledby="voteTitle">
     <div class="modal-content">
-      <h2 id="voteTitle">Will you vote for Fatima?</h2>
+      <h2 id="voteTitle">Will you vote for Fatima Irfan?</h2>
       <div class="modal-controls">
         <button class="yes" id="yesBtn">Yes</button>
-        <button class="no" id="noBtn">No 🙃</button>
+        <button class="no" id="noBtn">No (don't even)</button>
       </div>
     </div>
   </div>
 
   <div class="wrap">
     <header>
-      <h1>Vote Fatima for Head Girl!</h1>
+      <h1>Vote Fatima Irfan for Head Girl!</h1>
       <div class="subtitle">Kind leadership. Creative ideas. Everyone heard.</div>
     </header>
 
     <main>
       <div class="countdown" id="countdown" aria-live="polite"></div>
-      <div class="tagline">⏳ Voting opens tomorrow at 8:00 — show your support!</div>
+      <div class="tagline">⏳ Voting at 8:00 tomorrow— vote for fatima irfan!</div>
 
       <!-- About -->
       <section class="about" aria-labelledby="aboutTitle">
         <div class="about-img" aria-hidden="true">
-          <img src="lee.jpg" alt="Fatima smiling">
+          <img src="lee.jpg" alt="Fatima Irfan smiling">
         </div>
         <div class="about-text">
-          <h2 id="aboutTitle">Fatima — Vision in one line</h2>
-          <p>Fatima wants a kinder, more creative school where every pupil feels listened to and confident to try new things.</p>
-          <div class="short-goals" aria-hidden="false">
-            <div class="pill">Inclusive events</div>
-            <div class="pill">Club growth</div>
-            <div class="pill">Student drop-ins</div>
-          </div>
+          <h2 id="aboutTitle">Fatima Irfan — Vision in one line</h2>
+          <p>Fatima Irfan wants a kinder, more creative school where every pupil feels listened to and confident to try new things.</p>
         </div>
       </section>
 
       <!-- Scrolling Quotes -->
       <div class="quotes-container" aria-label="Supporter quotes">
         <div class="quotes" id="quotes">
-          <span>"Fatima has my vote!"</span>
+          <span>"Fatima Irfan has my vote!"</span>
           <span>"A leader who listens"</span>
           <span>"Brings energy and kindness"</span>
           <span>"Creative and fair"</span>
-          <span>"Vote Fatima — smart choice!"</span>
+          <span>"Just do it. Vote Fatima Irfan."</span>
         </div>
       </div>
 
@@ -222,7 +217,7 @@
   </div>
 
   <!-- Floating Vote button -->
-  <button class="vote-btn" id="voteBtn" aria-label="Vote for Fatima">✨ Vote Fatima</button>
+  <button class="vote-btn" id="voteBtn" aria-label="Vote for Fatima Irfan">✨ Vote Fatima Irfan</button>
 
   <script>
     /* ---------- stars ---------- */
@@ -250,7 +245,7 @@
       target.setHours(8,0,0,0);
       const diff = target - now;
       if(diff <= 0){
-        document.getElementById('countdown').textContent = "It's Voting Time! 🗳️";
+        document.getElementById('countdown').textContent = "It's Voting Time!";
         return;
       }
       const hrs = Math.floor(diff/(1000*60*60));
@@ -271,7 +266,7 @@
     let yesScale = 1;
 
     // supporters storage & UI
-    const storageKey = 'fatima_support_v_final';
+    const storageKey = 'Fatima Irfan_support_v_final';
     const target = 200;
     function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '28', 10); }
     function setSupport(v){ localStorage.setItem(storageKey, String(v)); updateSupportUI(); }
@@ -358,10 +353,21 @@
     const funBtn = document.getElementById('funBtn');
     const funMessageEl = document.getElementById('funMessage');
     const messages = [
-      "✨ You just shared the good vibes!",
-      "🎉 Thanks — Fatima is grateful!",
-      "😎 Smart move. Vote Fatima.",
-      "🍀 Good luck — see you tomorrow!"
+      "Smart move. Vote Fatima Irfan.",
+      "Fatima Irfan means business (and progress).",
+      "Cool heads choose Fatima Irfan.",
+      "Future’s brighter with Fatima Irfan in charge.",
+      "Skip the noise, trust Fatima Irfan.",
+      "Because Fatima Irfan actually listens.",
+      "Want results? Pick Fatima Irfan.",
+      "Fatima Irfan: less talk, more action.",
+      "The smart choice has a name: Fatima Irfan.",
+      "No gimmicks. Just Fatima Irfan.",
+      "Strong voice, steady hands — Fatima Irfan.",
+      "Even your future self says: vote Fatima Irfan.",
+      "Fatima Irfan: because progress looks good on you.",
+      "Complain less, vote Fatima Irfan.",
+      "One ballot, one boss move: Fatima Irfan.",
     ];
     funBtn.addEventListener('click', () => {
       const msg = messages[Math.floor(Math.random()*messages.length)];
