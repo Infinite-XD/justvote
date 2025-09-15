@@ -14,60 +14,42 @@
       --text: #f4eeff;
     }
 
-    /* Reset + viewport coverage */
     *{box-sizing:border-box;margin:0;padding:0}
     html,body{min-height:100vh;height:auto}
     body{
       font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color:var(--text);
-      /* first: solid fallback color (used if anything else fails) */
       background-color: #120023;
-      /* Old WebKit gradient fallback (very old Safari) */
-      background-image: -webkit-gradient(linear, left top, right bottom, from(#120023), color-stop(0.7, #2b1055));
-      /* WebKit modern */
-      background-image: -webkit-linear-gradient(135deg, #120023 0%, #2b1055 70%);
-      /* Standard */
       background-image: linear-gradient(135deg, #120023 0%, #2b1055 70%);
-      /* safety non-repeating */
-      background-repeat: no-repeat;
-      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
       padding:20px;
       overflow-x:hidden;
       position:relative;
       color-scheme: dark;
     }
-
-    /* bottom fade overlay uses explicit colors for Safari safety */
     body::after{
       content:""; position:fixed; left:0; right:0; bottom:0; height:140px;
-      background: -webkit-linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 60%);
       background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 60%);
       pointer-events:none; z-index:0;
     }
 
     @media (max-width:480px){
-      /* tone down gradient on phones and make bottom fade larger */
-      body{ background-image: -webkit-linear-gradient(180deg,#150525,#2b1055 60%); background-image: linear-gradient(180deg,#150525,#2b1055 60%); padding:18px 14px; }
-      body::after{ height:220px; background: -webkit-linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); }
+      body{ background-image: linear-gradient(180deg,#150525,#2b1055 60%); padding:18px 14px; }
+      body::after{ height:220px; background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); }
     }
 
-    /* Page container */
     .wrap{max-width:980px;margin:0 auto;position:relative;z-index:1}
     header{margin-bottom:12px;text-align:center}
     h1{font-size:clamp(1.6rem,3vw,2.4rem);color:#ffdfff;text-shadow:0 6px 20px rgba(155,93,229,.08)}
     .subtitle{color:#efdff7;font-size:0.98rem;margin-top:6px;opacity:.95}
 
-    /* Stars background (subtle) */
     .stars{position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:0.6}
     .star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:float 8s linear infinite}
     @keyframes float{from{transform:translateY(0)}to{transform:translateY(-120vh);opacity:0}}
 
-    /* Modal */
     .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1200}
     .modal-content{
       width:min(420px,94%);
-      background-color: rgba(43,16,85,0.98); /* explicit fallback */
-      background-image: -webkit-linear-gradient(180deg,#2b1055,#431a6f);
+      background-color: rgba(43,16,85,0.98);
       background-image: linear-gradient(180deg,#2b1055,#431a6f);
       padding:18px;border-radius:12px;border:1px solid rgba(155,93,229,.12);
       box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center;
@@ -75,14 +57,12 @@
     .modal-content h2{font-size:1.1rem;margin-bottom:12px}
     .modal-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
     button{cursor:pointer;border:none;border-radius:10px;padding:10px 16px;font-weight:700;transition:transform .12s ease,opacity .12s}
-    .yes{background: -webkit-linear-gradient(90deg, #9b5de5, #7b3be3); background: linear-gradient(90deg, #9b5de5, #7b3be3); color:#fff}
-    .no{background: -webkit-linear-gradient(90deg, #ff7b7b, #ff6b6b); background: linear-gradient(90deg, #ff7b7b, #ff6b6b); color:#fff}
+    .yes{background: linear-gradient(90deg, #9b5de5, #7b3be3); color:#fff}
+    .no{background: linear-gradient(90deg, #ff7b7b, #ff6b6b); color:#fff}
 
-    /* Countdown & tagline */
     .countdown{font-size:1.8rem;margin:14px 0;font-weight:700;color:#ffdfff;text-shadow:0 0 8px rgba(155,93,229,.06);text-align:center}
     .tagline{font-style:italic;color:#f0e6ff;text-align:center;margin-bottom:18px}
 
-    /* About (short & simple) */
     .about{
       display:flex;gap:16px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
       padding:14px;border-radius:12px;border:1px solid var(--muted);
@@ -92,8 +72,6 @@
     .about-text{flex:1;color:var(--text);line-height:1.5;padding-right:6px}
     .about-text h2{font-size:1.05rem;margin-bottom:6px;color:#ffe7ff}
     .about-text p{font-size:0.98rem;margin-bottom:8px}
-    .short-goals{display:flex;gap:8px;flex-wrap:wrap}
-    .pill{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:999px;font-weight:700;font-size:0.92rem;border:1px solid rgba(155,93,229,0.06)}
 
     @media (max-width:720px){
       .about{flex-direction:column;align-items:flex-start}
@@ -101,43 +79,45 @@
       .about-text{padding:10px 0 0 0}
     }
 
-    /* Scrolling quotes */
     .quotes-container{
       overflow:hidden;white-space:nowrap;margin:18px 0;padding:12px 6px;border-top:1px solid rgba(155,93,229,0.08);border-bottom:1px solid rgba(155,93,229,0.08);
       background:linear-gradient(180deg, rgba(255,255,255,0.005), rgba(255,255,255,0.003));border-radius:8px;
     }
-    .quotes{display:inline-block;padding-left:100%;animation:scroll 16s linear infinite}
+    .quotes{display:inline-block;padding-left:100%;animation:scroll 28s linear infinite}
     @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
     .quotes span{display:inline-block;margin:0 48px;font-weight:600;color:#ffdff8;font-size:1rem}
 
-    /* Meter */
     .meter-wrap{margin:18px 0;padding:10px;border-radius:10px;border:1px solid var(--muted);background:rgba(255,255,255,0.01)}
     .meter-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:700}
     .meter{height:14px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
     .meter-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .6s ease}
 
-    /* Fun */
-    .fun{margin-top:18px;text-align:center;position:relative}
-    .fun button{padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent-2),#ff7bbf);color:#fff;font-weight:800}
-    .fun p{margin-top:12px;font-size:0.98rem;color:#f5eaff;min-height:1.2em}
-
-    /* Floating vote button */
     .vote-btn{
       position:fixed;right:18px;bottom:18px;padding:12px 18px;border-radius:999px;border:none;
       background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#fff;font-weight:900;z-index:1000;
-      box-shadow:0 18px 40px rgba(155,93,229,0.14);transition:transform .18s ease,top .25s ease,right .25s ease,bottom .25s ease,left .25s ease,opacity .2s ease;
-      display:none;
+      box-shadow:0 18px 40px rgba(155,93,229,0.14);transition:transform .18s ease,opacity .2s ease;
+      display:none; max-width:calc(100% - 48px); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
     .vote-btn:active{transform:translateY(1px)}
+    @media (max-width:880px){
+      .vote-btn{right:14px;bottom:22px;padding:14px 18px;font-size:1.08rem;box-shadow:0 12px 28px rgba(155,93,229,0.12); }
+      .vote-btn{ font-size: clamp(1rem, 3.6vw, 1.12rem); }
+      .countdown{font-size:2.2rem}
+      .about-img{flex:0 0 180px;height:180px}
+      .modal-content{padding:20px}
+      .modal-content h2{font-size:1.15rem}
+      .meter{height:16px}
+      button{padding:12px 18px}
+      .about-text h2{font-size:1.12rem}
+      .about-text p{font-size:1.05rem}
+    }
     @media (max-width:520px){
-      /* keep phone sizing unchanged per your request */
-      .vote-btn{right:14px;bottom:28px;padding:10px 14px;font-size:0.95rem;box-shadow:0 14px 30px rgba(155,93,229,0.12)}
+      .vote-btn{right:14px;bottom:28px;padding:10px 12px;font-size:0.95rem;box-shadow:0 10px 22px rgba(155,93,229,0.12)}
     }
 
     .vote-top{ top:18px !important; bottom:auto !important; right:18px !important; left:auto !important; transform:translateY(0) !important; }
     .vote-side{ left:18px !important; right:auto !important; bottom:18px !important; top:auto !important; }
 
-    /* Desktop scaling only (phones kept the same) */
     @media (min-width:1100px){
       .wrap{max-width:1300px}
       h1{font-size:3.4rem}
@@ -149,6 +129,36 @@
     }
 
     button:focus{outline:3px solid rgba(255,200,255,0.12);outline-offset:2px}
+
+    /* Toast */
+    .toast {
+      position:fixed;
+      left:auto; /* we'll set left in JS to center over the vote button */
+      bottom:82px;
+      z-index:1100;
+      background: linear-gradient(90deg, rgba(155,93,229,0.16), rgba(255,107,203,0.12));
+      backdrop-filter: blur(6px);
+      color:var(--text);
+      padding:10px 14px;
+      border-radius:10px;
+      border:1px solid rgba(155,93,229,0.12);
+      max-width:320px;
+      font-weight:700;
+      box-shadow:0 8px 20px rgba(0,0,0,0.35);
+      transform-origin:center;
+      opacity:0;
+      pointer-events:none;
+      transform:translateX(-50%); /* keep the transform present so when JS sets left it centers properly */
+    }
+    .toast.show { animation: toastIn .36s ease forwards; }
+    .toast.hide { animation: toastOut .28s ease forwards; }
+    @keyframes toastIn { from { transform: translateY(6px) translateX(-50%); opacity:0; } to { transform: translateY(0) translateX(-50%); opacity:1; } }
+    @keyframes toastOut { from { opacity:1 } to { opacity:0; transform: translateY(8px) translateX(-50%); } }
+
+    @media (max-width:420px){
+      .toast { max-width:calc(100% - 56px); font-size:0.95rem; }
+      .vote-btn { right:12px; bottom:18px; }
+    }
   </style>
 </head>
 <body>
@@ -167,7 +177,7 @@
 
   <div class="wrap">
     <header>
-      <h1>Vote Fatima Irfan!</h1>
+      <h1>Vote Fatima Irfan For Head Girl!</h1>
       <div class="subtitle">Kind leadership. Creative ideas. Everyone heard.</div>
     </header>
 
@@ -181,19 +191,33 @@
           <img src="lee.jpg" alt="Fatima Irfan smiling">
         </div>
         <div class="about-text">
-          <h2 id="aboutTitle">Fatima Irfan — Vision in one line</h2>
+          <h2 id="aboutTitle">Fatima Irfan — Vision in one line:</h2>
           <p>Free kitties for everyone</p>
         </div>
       </section>
 
-      <!-- Scrolling Quotes -->
+      <!-- Scrolling Quotes (expanded list) -->
       <div class="quotes-container" aria-label="Supporter quotes">
         <div class="quotes" id="quotes">
-          <span>"Fatima Irfan has my vote!"</span>
-          <span>"A leader who listens"</span>
-          <span>"Brings energy and kindness"</span>
-          <span>"Creative and fair"</span>
-          <span>"Just do it. Vote Fatima Irfan."</span>
+          <span>"Proud to support Fatima."</span>
+          <span>"She's the real deal."</span>
+          <span>"Future leader."</span>
+          <span>"Vote for change."</span>
+          <span>"Kind and capable."</span>
+          <span>"We trust Fatima."</span>
+          <span>"She actually listens."</span>
+          <span>"Fresh ideas, fair leadership."</span>
+          <span>"For everyone — vote Fatima."</span>
+          <span>"Leadership with heart."</span>
+          <span>"Ready for action."</span>
+          <span>"Committed and cool."</span>
+          <span>"Strong, steady, fair."</span>
+          <span>"A vote for progress."</span>
+          <span>"Count me in!"</span>
+          <span>"Here for Fatima."</span>
+          <span>"Confidence in Fatima."</span>
+          <span>"Made my day — she’s great."</span>
+          <span>"All in for Fatima."</span>
         </div>
       </div>
 
@@ -207,17 +231,14 @@
           <div class="meter-fill" id="meterFill" style="width:0%"></div>
         </div>
       </section>
-
-      <!-- Fun (last feature) -->
-      <section class="fun" id="funSection">
-        <button id="funBtn">Feeling lucky? Click</button>
-        <p id="funMessage" aria-live="polite"></p>
-      </section>
     </main>
   </div>
 
   <!-- Floating Vote button -->
-  <button class="vote-btn" id="voteBtn" aria-label="Vote for Fatima Irfan">✨ Vote Fatima Irfan</button>
+  <button class="vote-btn" id="voteBtn" aria-label="Vote for Fatima Irfan" title="Click to vote (and get a quick message)">✨ Vote Fatima Irfan</button>
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite" aria-atomic="true" style="display:none"></div>
 
   <script>
     /* ---------- stars ---------- */
@@ -268,13 +289,13 @@
     // supporters storage & UI
     const storageKey = 'Fatima Irfan_support_v_final';
     const target = 200;
-    function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '1000', 10); }
+    function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '1000', 10); } // default 1000 now
     function setSupport(v){ localStorage.setItem(storageKey, String(v)); updateSupportUI(); }
     function updateSupportUI(){
       const val = getSupport();
       document.getElementById('supportCount').textContent = val;
       const pct = Math.min(100, Math.round((val / target) * 100));
-      document.getElementById('meterFill').style.width = pct/2 + '%';
+      document.getElementById('meterFill').style.width = pct + '%';
       document.querySelector('.meter').setAttribute('aria-valuenow', String(Math.min(val, target)));
     }
     function addSupport(n=1){
@@ -295,53 +316,18 @@
       yesScale = Math.min(2.6, yesScale + 0.22);
       yesBtn.style.transform = `scale(${yesScale})`;
       addSupport(1);
-      setTimeout(()=>{ modal.style.display = 'none'; showVoteBtn(); }, 220);
+      setTimeout(()=>{ modal.style.display = 'none'; showVoteBtn(); positionToastAndButton(); }, 220);
     });
 
-    // Escape closes modal
     window.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape'){ modal.style.display = 'none'; showVoteBtn(); }
+      if(e.key === 'Escape'){ modal.style.display = 'none'; showVoteBtn(); positionToastAndButton(); }
     });
 
     /* ---------- vote button ---------- */
     function showVoteBtn(){
       voteBtn.style.display = 'block';
       voteBtn.style.opacity = '1';
-    }
-    voteBtn.addEventListener('click', () => { addSupport(1); });
-
-    /* ---------- ensure initial UI ---------- */
-    updateSupportUI();
-    if(modal.style.display === 'none' || !modal.offsetParent) showVoteBtn();
-
-    /* ---------- avoid overlap: move button when .fun enters view ---------- */
-    const funSection = document.getElementById('funSection');
-    if(funSection && 'IntersectionObserver' in window){
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if(entry.isIntersecting){
-            voteBtn.classList.remove('vote-side');
-            voteBtn.classList.add('vote-top');
-            voteBtn.style.top = '18px';
-            voteBtn.style.right = '18px';
-            voteBtn.style.bottom = 'auto';
-            voteBtn.style.left = 'auto';
-          } else {
-            voteBtn.classList.remove('vote-top');
-            voteBtn.style.top = 'auto';
-            voteBtn.style.bottom = '18px';
-            voteBtn.style.right = '18px';
-            voteBtn.style.left = 'auto';
-          }
-        });
-      }, { root: null, threshold: 0.12 });
-      observer.observe(funSection);
-    } else {
-      window.addEventListener('scroll', () => {
-        const fromBottom = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-        if(fromBottom < 420){ voteBtn.style.top = '18px'; voteBtn.style.right = '18px'; voteBtn.style.bottom = 'auto'; }
-        else { voteBtn.style.top = 'auto'; voteBtn.style.bottom = '18px'; voteBtn.style.right = '18px'; }
-      });
+      positionToastAndButton();
     }
 
     /* ---------- small page flash for milestones ---------- */
@@ -349,30 +335,88 @@
       document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.06)'},{filter:'brightness(1)'}],{duration:700});
     }
 
-    /* ---------- Fun messages ---------- */
-    const funBtn = document.getElementById('funBtn');
-    const funMessageEl = document.getElementById('funMessage');
+    /* ---------- Fun messages (snappy post-vote replies) ---------- */
     const messages = [
-      "Smart move. Vote Fatima Irfan.",
-      "Fatima Irfan means business (and progress).",
-      "Cool heads choose Fatima Irfan.",
-      "Future’s brighter with Fatima Irfan in charge.",
-      "Skip the noise, trust Fatima Irfan.",
-      "Because Fatima Irfan actually listens.",
-      "Want results? Pick Fatima Irfan.",
-      "Fatima Irfan: less talk, more action.",
-      "The smart choice has a name: Fatima Irfan.",
-      "No gimmicks. Just Fatima Irfan.",
-      "Strong voice, steady hands — Fatima Irfan.",
-      "Even your future self says: vote Fatima Irfan.",
-      "Fatima Irfan: because progress looks good on you.",
-      "Complain less, vote Fatima Irfan.",
-      "One ballot, one boss move: Fatima Irfan.",
+      "Smart move.",
+      "Nice call.",
+      "Great choice.",
+      "Right choice.",
+      "You rock.",
+      "Winning move.",
+      "Thanks — smart pick.",
+      "Onward!",
+      "High five!",
+      "Cheers — appreciated.",
+      "Good call.",
+      "Locked in.",
+      "Let's go!"
     ];
-    funBtn.addEventListener('click', () => {
+
+    // toast handling & centering over the vote button
+    const toastEl = document.getElementById('toast');
+    let toastTimer = null;
+
+    function positionToastAndButton(){
+      // position toast above the vote button and horizontally centered on it
+      // ensure vote button is visible
+      const rect = voteBtn.getBoundingClientRect();
+      // If voteBtn is not in the viewport or still display none, fallback to center of viewport
+      let centerX = window.innerWidth / 2;
+      if(rect && rect.width > 0 && voteBtn.offsetParent !== null){
+        centerX = rect.left + rect.width / 2;
+      }
+      // measure toast width (temporarily make visible if needed)
+      let wasHidden = (toastEl.style.display === 'none' || getComputedStyle(toastEl).display === 'none');
+      if(wasHidden){
+        toastEl.style.visibility = 'hidden';
+        toastEl.style.display = 'block';
+      }
+      const toastWidth = toastEl.offsetWidth || Math.min(320, window.innerWidth - 48);
+      if(wasHidden){
+        toastEl.style.display = 'none';
+        toastEl.style.visibility = '';
+      }
+      // clamp center so toast doesn't overflow viewport edges (12px margin)
+      const minX = 12 + toastWidth / 2;
+      const maxX = window.innerWidth - 12 - toastWidth / 2;
+      const finalX = Math.max(minX, Math.min(maxX, centerX));
+      toastEl.style.left = finalX + 'px';
+      // keep translateX(-50%) in CSS so this centers around left
+      // bottom offset depending on viewport height
+      toastEl.style.bottom = (window.innerHeight < 520 ? '96px' : '82px');
+    }
+
+    function showToast(msg, ms = 2500){
+      clearTimeout(toastTimer);
+      toastEl.textContent = msg;
+      positionToastAndButton(); // center it relative to vote button
+      toastEl.style.display = 'block';
+      toastEl.classList.remove('hide');
+      void toastEl.offsetWidth;
+      toastEl.classList.add('show');
+      toastTimer = setTimeout(()=> {
+        toastEl.classList.remove('show');
+        toastEl.classList.add('hide');
+        setTimeout(()=> { toastEl.style.display = 'none'; toastEl.classList.remove('hide'); }, 280);
+      }, ms);
+    }
+
+    // On click: add supporter + show short post-vote toast centered over the button
+    voteBtn.addEventListener('click', (e) => {
+      addSupport(1);
       const msg = messages[Math.floor(Math.random()*messages.length)];
-      funMessageEl.textContent = msg;
+      showToast(msg);
     });
+
+    /* ---------- ensure initial UI ---------- */
+    updateSupportUI();
+    if(modal.style.display === 'none' || !modal.offsetParent) showVoteBtn();
+
+    // keep positions updated
+    window.addEventListener('resize', positionToastAndButton);
+    window.addEventListener('load', positionToastAndButton);
+    // also keep position when scrolling (button might be fixed but just in case)
+    window.addEventListener('scroll', positionToastAndButton);
   </script>
 </body>
 </html>
