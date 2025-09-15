@@ -20,24 +20,30 @@
     body{
       font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
       color:var(--text);
-      background: linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 70%);
+      /* fallback color first so browsers with issues don't show white */
+      background-color: var(--bg-1);
+      /* -webkit fallback for older Safari */
+      background: -webkit-linear-gradient(135deg, var(--bg-1, #120023) 0%, var(--bg-2, #2b1055) 70%);
+      background: linear-gradient(135deg, var(--bg-1, #120023) 0%, var(--bg-2, #2b1055) 70%);
       -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
-      padding:20px 20px 180px; /* large bottom padding so fixed vote button won't cover content */
+      padding:20px 20px 200px; /* plenty of bottom padding so fixed vote button won't cover content */
       overflow-x:hidden;
       position:relative;
+      color-scheme: dark;
     }
 
-    /* Subtle bottom fade overlay to avoid hard color boundary on all devices */
+    /* Bottom fade overlay (keeps lower edge smooth on mobile Safari) */
     body::after{
       content:""; position:fixed; left:0; right:0; bottom:0; height:140px;
+      /* explicit non-variable fallback colors to avoid white if variables fail */
+      background: -webkit-linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 60%);
       background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 60%);
       pointer-events:none; z-index:0;
     }
 
     @media (max-width:480px){
-      /* smoother and darker bottom without abrupt color changes */
-      body{ background: linear-gradient(180deg,#150525,#2b1055 60%); padding:18px 14px 260px; }
-      body::after{ height:220px; background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); }
+      body{ background: -webkit-linear-gradient(180deg,#150525,#2b1055 60%); background: linear-gradient(180deg,#150525,#2b1055 60%); padding:18px 14px 260px;}
+      body::after{ height:220px; background:-webkit-linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); background:linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%);}
     }
 
     /* Page container */
@@ -46,19 +52,26 @@
     h1{font-size:clamp(1.6rem,3vw,2.4rem);color:#ffdfff;text-shadow:0 6px 20px rgba(155,93,229,.08)}
     .subtitle{color:#efdff7;font-size:0.98rem;margin-top:6px;opacity:.95}
 
-    /* Stars background */
+    /* Stars background (light) */
     .stars{position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:0.6}
     .star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:float 8s linear infinite}
     @keyframes float{from{transform:translateY(0)}to{transform:translateY(-120vh);opacity:0}}
 
     /* Modal */
     .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1200}
-    .modal-content{width:min(420px,94%);background:linear-gradient(180deg,#2b1055,#431a6f);padding:18px;border-radius:12px;border:1px solid rgba(155,93,229,.12);box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center}
+    .modal-content{
+      width:min(420px,94%);
+      background-color: rgba(43,16,85,0.98); /* explicit fallback color */
+      background: -webkit-linear-gradient(180deg,#2b1055,#431a6f);
+      background: linear-gradient(180deg,#2b1055,#431a6f);
+      padding:18px;border-radius:12px;border:1px solid rgba(155,93,229,.12);
+      box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center;
+    }
     .modal-content h2{font-size:1.1rem;margin-bottom:12px}
     .modal-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
     button{cursor:pointer;border:none;border-radius:10px;padding:10px 16px;font-weight:700;transition:transform .12s ease,opacity .12s}
-    .yes{background:linear-gradient(90deg,var(--accent),#7b3be3);color:#fff}
-    .no{background:linear-gradient(90deg,#ff7b7b,#ff6b6b);color:#fff}
+    .yes{background: -webkit-linear-gradient(90deg, var(--accent), #7b3be3); background: linear-gradient(90deg, var(--accent), #7b3be3); color:#fff}
+    .no{background: -webkit-linear-gradient(90deg, #ff7b7b, #ff6b6b); background: linear-gradient(90deg, #ff7b7b, #ff6b6b); color:#fff}
 
     /* Countdown & tagline */
     .countdown{font-size:1.8rem;margin:14px 0;font-weight:700;color:#ffdfff;text-shadow:0 0 8px rgba(155,93,229,.06);text-align:center}
@@ -83,7 +96,7 @@
       .about-text{padding:10px 0 0 0}
     }
 
-    /* Scrolling quotes (restored) */
+    /* Scrolling quotes */
     .quotes-container{
       overflow:hidden;white-space:nowrap;margin:18px 0;padding:12px 6px;border-top:1px solid rgba(155,93,229,0.08);border-bottom:1px solid rgba(155,93,229,0.08);
       background:linear-gradient(180deg, rgba(255,255,255,0.005), rgba(255,255,255,0.003));border-radius:8px;
@@ -92,33 +105,48 @@
     @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
     .quotes span{display:inline-block;margin:0 48px;font-weight:600;color:#ffdff8;font-size:1rem}
 
-    /* Meter (compact) */
+    /* Meter */
     .meter-wrap{margin:18px 0;padding:10px;border-radius:10px;border:1px solid var(--muted);background:rgba(255,255,255,0.01)}
     .meter-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:700}
     .meter{height:14px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
     .meter-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .6s ease}
 
-    /* Fun (last feature) */
+    /* Fun */
     .fun{margin-top:18px;text-align:center;position:relative}
     .fun button{padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent-2),#ff7bbf);color:#fff;font-weight:800}
     .fun p{margin-top:12px;font-size:0.98rem;color:#f5eaff;min-height:1.2em}
 
     /* Floating vote button */
     .vote-btn{
-      position:fixed;right:18px;bottom:18px;padding:12px 18px;border-radius:999px;border:none;background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#fff;font-weight:900;z-index:1000;
+      position:fixed;right:18px;bottom:18px;padding:12px 18px;border-radius:999px;border:none;
+      background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#fff;font-weight:900;z-index:1000;
       box-shadow:0 18px 40px rgba(155,93,229,0.14);transition:transform .18s ease,top .25s ease,right .25s ease,bottom .25s ease,left .25s ease,opacity .2s ease;
       display:none;
     }
     .vote-btn:active{transform:translateY(1px)}
     @media (max-width:520px){
+      /* ensure we do NOT change mobile sizing (we keep earlier mobile values) */
       .vote-btn{right:14px;bottom:28px;padding:10px 14px;font-size:0.95rem;box-shadow:0 14px 30px rgba(155,93,229,0.12)}
     }
 
-    /* When moving to top */
+    /* When moving to top so it won't overlap last item */
     .vote-top{ top:18px !important; bottom:auto !important; right:18px !important; left:auto !important; transform:translateY(0) !important; }
     .vote-side{ left:18px !important; right:auto !important; bottom:18px !important; top:auto !important; }
 
     button:focus{outline:3px solid rgba(255,200,255,0.12);outline-offset:2px}
+
+    /* ---------------- Desktop only changes (bigger) ----------------
+       We only change sizing when the viewport is large — phones are untouched.
+    ----------------------------------------------------------------- */
+    @media (min-width:1100px){
+      .wrap{max-width:1300px}
+      h1{font-size:3.4rem}
+      .about-img{flex:0 0 220px;height:220px}
+      .about{padding:22px;gap:24px}
+      .about-text h2{font-size:1.35rem}
+      .countdown{font-size:2.6rem}
+      .vote-btn{padding:16px 22px;font-size:1.05rem}
+    }
   </style>
 </head>
 <body>
@@ -241,7 +269,7 @@
     let yesScale = 1;
 
     // supporters storage & UI
-    const storageKey = 'fatima_support_v3';
+    const storageKey = 'fatima_support_v_final';
     const target = 200;
     function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '28', 10); }
     function setSupport(v){ localStorage.setItem(storageKey, String(v)); updateSupportUI(); }
@@ -254,7 +282,6 @@
     }
     function addSupport(n=1){
       setSupport(getSupport() + n);
-      // feedback
       voteBtn.animate([{transform:'scale(1)'},{transform:'scale(.98)'},{transform:'scale(1)'}],{duration:260});
       if(getSupport() % 25 === 0) flashPage();
     }
@@ -299,7 +326,6 @@
             // fun section visible -> move vote button to top-right so it doesn't cover content
             voteBtn.classList.remove('vote-side');
             voteBtn.classList.add('vote-top');
-            // apply explicit top style (ensures consistent position)
             voteBtn.style.top = '18px';
             voteBtn.style.right = '18px';
             voteBtn.style.bottom = 'auto';
@@ -319,7 +345,7 @@
       // fallback: move when scrolling near bottom (for older browsers)
       window.addEventListener('scroll', () => {
         const fromBottom = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
-        if(fromBottom < 420){ // near bottom -> move up
+        if(fromBottom < 420){
           voteBtn.style.top = '18px'; voteBtn.style.right = '18px'; voteBtn.style.bottom = 'auto';
         } else {
           voteBtn.style.top = 'auto'; voteBtn.style.bottom = '18px'; voteBtn.style.right = '18px';
@@ -345,7 +371,6 @@
       const msg = messages[Math.floor(Math.random()*messages.length)];
       funMessageEl.textContent = msg;
     });
-
   </script>
 </body>
 </html>
