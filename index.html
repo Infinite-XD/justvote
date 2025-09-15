@@ -160,7 +160,7 @@
       <h2 id="voteTitle">Will you vote for Fatima Irfan?</h2>
       <div class="modal-controls">
         <button class="yes" id="yesBtn">Yes</button>
-        <button class="no" id="noBtn">No (don't even)</button>
+        <button class="no" id="noBtn">No</button>
       </div>
     </div>
   </div>
@@ -182,7 +182,7 @@
         </div>
         <div class="about-text">
           <h2 id="aboutTitle">Fatima Irfan — Vision in one line</h2>
-          <p>Fatima Irfan wants a kinder, more creative school where every pupil feels listened to and confident to try new things.</p>
+          <p>Free kitties for everyone</p>
         </div>
       </section>
 
@@ -268,14 +268,14 @@
     // supporters storage & UI
     const storageKey = 'Fatima Irfan_support_v_final';
     const target = 200;
-    function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '28', 10); }
+    function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '1000', 10); }
     function setSupport(v){ localStorage.setItem(storageKey, String(v)); updateSupportUI(); }
     function updateSupportUI(){
       const val = getSupport();
       document.getElementById('supportCount').textContent = val;
-      const pct = Math.min(100, Math.round((val/target)*100));
-      document.getElementById('meterFill').style.width = pct + '%';
-      document.querySelector('.meter').setAttribute('aria-valuenow', String(Math.min(val,target)));
+      const pct = Math.min(100, Math.round((val / target) * 100));
+      document.getElementById('meterFill').style.width = pct/2 + '%';
+      document.querySelector('.meter').setAttribute('aria-valuenow', String(Math.min(val, target)));
     }
     function addSupport(n=1){
       setSupport(getSupport() + n);
