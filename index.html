@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Vote for Fatima!</title>
+  <style>
+    :root{
+      --bg-1: #120023;
+      --bg-2: #2b1055;
+      --accent: #9b5de5;
+      --accent-2: #ff6bcb;
+      --muted: rgba(255,255,255,0.06);
+      --text: #f4eeff;
+    }
+
+    /* Reset */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background: linear-gradient(135deg,var(--bg-1) 0%, var(--bg-2) 70%);
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
+      padding:20px 20px 180px; /* large bottom padding so fixed vote button won't cover content */
+      overflow-x:hidden;
+      position:relative;
+    }
+
+    /* Subtle bottom fade overlay to avoid hard color boundary on all devices */
+    body::after{
+      content:""; position:fixed; left:0; right:0; bottom:0; height:140px;
+      background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 60%);
+      pointer-events:none; z-index:0;
+    }
+
+    @media (max-width:480px){
+      /* smoother and darker bottom without abrupt color changes */
+      body{ background: linear-gradient(180deg,#150525,#2b1055 60%); padding:18px 14px 260px; }
+      body::after{ height:220px; background: linear-gradient(0deg, rgba(43,16,85,1) 0%, rgba(43,16,85,0) 70%); }
+    }
+
+    /* Page container */
+    .wrap{max-width:980px;margin:0 auto;position:relative;z-index:1}
+    header{margin-bottom:12px;text-align:center}
+    h1{font-size:clamp(1.6rem,3vw,2.4rem);color:#ffdfff;text-shadow:0 6px 20px rgba(155,93,229,.08)}
+    .subtitle{color:#efdff7;font-size:0.98rem;margin-top:6px;opacity:.95}
+
+    /* Stars background */
+    .stars{position:fixed;inset:0;pointer-events:none;z-index:-1;opacity:0.6}
+    .star{position:absolute;background:#fff;border-radius:50%;opacity:.7;animation:float 8s linear infinite}
+    @keyframes float{from{transform:translateY(0)}to{transform:translateY(-120vh);opacity:0}}
+
+    /* Modal */
+    .modal{position:fixed;inset:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1200}
+    .modal-content{width:min(420px,94%);background:linear-gradient(180deg,#2b1055,#431a6f);padding:18px;border-radius:12px;border:1px solid rgba(155,93,229,.12);box-shadow:0 10px 30px rgba(0,0,0,.45);text-align:center}
+    .modal-content h2{font-size:1.1rem;margin-bottom:12px}
+    .modal-controls{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+    button{cursor:pointer;border:none;border-radius:10px;padding:10px 16px;font-weight:700;transition:transform .12s ease,opacity .12s}
+    .yes{background:linear-gradient(90deg,var(--accent),#7b3be3);color:#fff}
+    .no{background:linear-gradient(90deg,#ff7b7b,#ff6b6b);color:#fff}
+
+    /* Countdown & tagline */
+    .countdown{font-size:1.8rem;margin:14px 0;font-weight:700;color:#ffdfff;text-shadow:0 0 8px rgba(155,93,229,.06);text-align:center}
+    .tagline{font-style:italic;color:#f0e6ff;text-align:center;margin-bottom:18px}
+
+    /* About (short & simple) */
+    .about{
+      display:flex;gap:16px;align-items:center;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      padding:14px;border-radius:12px;border:1px solid var(--muted);
+    }
+    .about-img{flex:0 0 140px;height:140px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+    .about-img img{width:100%;height:100%;object-fit:cover;display:block}
+    .about-text{flex:1;color:var(--text);line-height:1.5;padding-right:6px}
+    .about-text h2{font-size:1.05rem;margin-bottom:6px;color:#ffe7ff}
+    .about-text p{font-size:0.98rem;margin-bottom:8px}
+    .short-goals{display:flex;gap:8px;flex-wrap:wrap}
+    .pill{background:rgba(255,255,255,0.03);padding:8px 10px;border-radius:999px;font-weight:700;font-size:0.92rem;border:1px solid rgba(155,93,229,0.06)}
+
+    @media (max-width:720px){
+      .about{flex-direction:column;align-items:flex-start}
+      .about-img{width:100%;height:220px;flex:0 0 auto}
+      .about-text{padding:10px 0 0 0}
+    }
+
+    /* Scrolling quotes (restored) */
+    .quotes-container{
+      overflow:hidden;white-space:nowrap;margin:18px 0;padding:12px 6px;border-top:1px solid rgba(155,93,229,0.08);border-bottom:1px solid rgba(155,93,229,0.08);
+      background:linear-gradient(180deg, rgba(255,255,255,0.005), rgba(255,255,255,0.003));border-radius:8px;
+    }
+    .quotes{display:inline-block;padding-left:100%;animation:scroll 16s linear infinite}
+    @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-100%)}}
+    .quotes span{display:inline-block;margin:0 48px;font-weight:600;color:#ffdff8;font-size:1rem}
+
+    /* Meter (compact) */
+    .meter-wrap{margin:18px 0;padding:10px;border-radius:10px;border:1px solid var(--muted);background:rgba(255,255,255,0.01)}
+    .meter-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:700}
+    .meter{height:14px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden}
+    .meter-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--accent-2),var(--accent));transition:width .6s ease}
+
+    /* Fun (last feature) */
+    .fun{margin-top:18px;text-align:center;position:relative}
+    .fun button{padding:10px 14px;border-radius:10px;background:linear-gradient(90deg,var(--accent-2),#ff7bbf);color:#fff;font-weight:800}
+    .fun p{margin-top:12px;font-size:0.98rem;color:#f5eaff;min-height:1.2em}
+
+    /* Floating vote button */
+    .vote-btn{
+      position:fixed;right:18px;bottom:18px;padding:12px 18px;border-radius:999px;border:none;background:linear-gradient(90deg,var(--accent-2),var(--accent));color:#fff;font-weight:900;z-index:1000;
+      box-shadow:0 18px 40px rgba(155,93,229,0.14);transition:transform .18s ease,top .25s ease,right .25s ease,bottom .25s ease,left .25s ease,opacity .2s ease;
+      display:none;
+    }
+    .vote-btn:active{transform:translateY(1px)}
+    @media (max-width:520px){
+      .vote-btn{right:14px;bottom:28px;padding:10px 14px;font-size:0.95rem;box-shadow:0 14px 30px rgba(155,93,229,0.12)}
+    }
+
+    /* When moving to top */
+    .vote-top{ top:18px !important; bottom:auto !important; right:18px !important; left:auto !important; transform:translateY(0) !important; }
+    .vote-side{ left:18px !important; right:auto !important; bottom:18px !important; top:auto !important; }
+
+    button:focus{outline:3px solid rgba(255,200,255,0.12);outline-offset:2px}
+  </style>
+</head>
+<body>
+  <div class="stars" id="stars"></div>
+
+  <!-- Modal -->
+  <div class="modal" id="voteModal" role="dialog" aria-modal="true" aria-labelledby="voteTitle">
+    <div class="modal-content">
+      <h2 id="voteTitle">Will you vote for Fatima?</h2>
+      <div class="modal-controls">
+        <button class="yes" id="yesBtn">Yes</button>
+        <button class="no" id="noBtn">No 🙃</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <header>
+      <h1>Vote Fatima for Head Girl!</h1>
+      <div class="subtitle">Kind leadership. Creative ideas. Everyone heard.</div>
+    </header>
+
+    <main>
+      <div class="countdown" id="countdown" aria-live="polite"></div>
+      <div class="tagline">⏳ Voting opens tomorrow at 8:00 — show your support!</div>
+
+      <!-- About -->
+      <section class="about" aria-labelledby="aboutTitle">
+        <div class="about-img" aria-hidden="true">
+          <img src="lee.jpg" alt="Fatima smiling">
+        </div>
+        <div class="about-text">
+          <h2 id="aboutTitle">Fatima — Vision in one line</h2>
+          <p>Fatima wants a kinder, more creative school where every pupil feels listened to and confident to try new things.</p>
+          <div class="short-goals" aria-hidden="false">
+            <div class="pill">Inclusive events</div>
+            <div class="pill">Club growth</div>
+            <div class="pill">Student drop-ins</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Scrolling Quotes -->
+      <div class="quotes-container" aria-label="Supporter quotes">
+        <div class="quotes" id="quotes">
+          <span>"Fatima has my vote!"</span>
+          <span>"A leader who listens"</span>
+          <span>"Brings energy and kindness"</span>
+          <span>"Creative and fair"</span>
+          <span>"Vote Fatima — smart choice!"</span>
+        </div>
+      </div>
+
+      <!-- Supporters meter -->
+      <section class="meter-wrap" aria-label="Supporters meter">
+        <div class="meter-label">
+          <div>Supporters</div>
+          <div id="supportCount" style="font-weight:900">0</div>
+        </div>
+        <div class="meter" role="progressbar" aria-valuemin="0" aria-valuemax="200" aria-valuenow="0">
+          <div class="meter-fill" id="meterFill" style="width:0%"></div>
+        </div>
+      </section>
+
+      <!-- Fun (last feature) -->
+      <section class="fun" id="funSection">
+        <button id="funBtn">Feeling lucky? Click</button>
+        <p id="funMessage" aria-live="polite"></p>
+      </section>
+    </main>
+  </div>
+
+  <!-- Floating Vote button -->
+  <button class="vote-btn" id="voteBtn" aria-label="Vote for Fatima">✨ Vote Fatima</button>
+
+  <script>
+    /* ---------- stars ---------- */
+    (function(){
+      const stars = document.getElementById('stars');
+      const count = 45;
+      for(let i=0;i<count;i++){
+        const s = document.createElement('div');
+        s.className = 'star';
+        const size = (Math.random()*2)+1;
+        s.style.width = s.style.height = `${size}px`;
+        s.style.left = (Math.random()*100)+'vw';
+        s.style.top = (Math.random()*100)+'vh';
+        s.style.opacity = (0.45 + Math.random()*0.6);
+        s.style.animationDuration = (6 + Math.random()*8)+'s';
+        stars.appendChild(s);
+      }
+    })();
+
+    /* ---------- countdown ---------- */
+    function updateCountdown(){
+      const now = new Date();
+      const target = new Date(now);
+      target.setDate(now.getDate() + 1);
+      target.setHours(8,0,0,0);
+      const diff = target - now;
+      if(diff <= 0){
+        document.getElementById('countdown').textContent = "It's Voting Time! 🗳️";
+        return;
+      }
+      const hrs = Math.floor(diff/(1000*60*60));
+      const mins = Math.floor((diff%(1000*60*60))/(1000*60));
+      const secs = Math.floor((diff%(1000*60))/1000);
+      document.getElementById('countdown').textContent = `${hrs}h ${String(mins).padStart(2,'0')}m ${String(secs).padStart(2,'0')}s`;
+    }
+    setInterval(updateCountdown,1000);
+    updateCountdown();
+
+    /* ---------- modal logic ---------- */
+    const modal = document.getElementById('voteModal');
+    const yesBtn = document.getElementById('yesBtn');
+    const noBtn = document.getElementById('noBtn');
+    const voteBtn = document.getElementById('voteBtn');
+
+    let noScale = 1;
+    let yesScale = 1;
+
+    // supporters storage & UI
+    const storageKey = 'fatima_support_v3';
+    const target = 200;
+    function getSupport(){ return parseInt(localStorage.getItem(storageKey) || '28', 10); }
+    function setSupport(v){ localStorage.setItem(storageKey, String(v)); updateSupportUI(); }
+    function updateSupportUI(){
+      const val = getSupport();
+      document.getElementById('supportCount').textContent = val;
+      const pct = Math.min(100, Math.round((val/target)*100));
+      document.getElementById('meterFill').style.width = pct + '%';
+      document.querySelector('.meter').setAttribute('aria-valuenow', String(Math.min(val,target)));
+    }
+    function addSupport(n=1){
+      setSupport(getSupport() + n);
+      // feedback
+      voteBtn.animate([{transform:'scale(1)'},{transform:'scale(.98)'},{transform:'scale(1)'}],{duration:260});
+      if(getSupport() % 25 === 0) flashPage();
+    }
+
+    noBtn.addEventListener('click', () => {
+      noScale = Math.max(0.08, noScale - 0.18);
+      noBtn.style.transform = `scale(${noScale})`;
+      yesScale = Math.min(2.6, yesScale + 0.08);
+      yesBtn.style.transform = `scale(${yesScale})`;
+      if(noScale <= 0.09) noBtn.style.display = 'none';
+    });
+
+    yesBtn.addEventListener('click', () => {
+      yesScale = Math.min(2.6, yesScale + 0.22);
+      yesBtn.style.transform = `scale(${yesScale})`;
+      addSupport(1);
+      setTimeout(()=>{ modal.style.display = 'none'; showVoteBtn(); }, 220);
+    });
+
+    // Escape closes modal
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape'){ modal.style.display = 'none'; showVoteBtn(); }
+    });
+
+    /* ---------- vote button ---------- */
+    function showVoteBtn(){
+      voteBtn.style.display = 'block';
+      voteBtn.style.opacity = '1';
+    }
+    voteBtn.addEventListener('click', () => { addSupport(1); });
+
+    /* ---------- ensure initial UI ---------- */
+    updateSupportUI();
+    if(modal.style.display === 'none' || !modal.offsetParent) showVoteBtn();
+
+    /* ---------- avoid overlap: move button when .fun enters view ---------- */
+    const funSection = document.getElementById('funSection');
+    if(funSection && 'IntersectionObserver' in window){
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if(entry.isIntersecting){
+            // fun section visible -> move vote button to top-right so it doesn't cover content
+            voteBtn.classList.remove('vote-side');
+            voteBtn.classList.add('vote-top');
+            // apply explicit top style (ensures consistent position)
+            voteBtn.style.top = '18px';
+            voteBtn.style.right = '18px';
+            voteBtn.style.bottom = 'auto';
+            voteBtn.style.left = 'auto';
+          } else {
+            // fun section not visible -> restore bottom-right
+            voteBtn.classList.remove('vote-top');
+            voteBtn.style.top = 'auto';
+            voteBtn.style.bottom = '18px';
+            voteBtn.style.right = '18px';
+            voteBtn.style.left = 'auto';
+          }
+        });
+      }, { root: null, threshold: 0.12 });
+      observer.observe(funSection);
+    } else {
+      // fallback: move when scrolling near bottom (for older browsers)
+      window.addEventListener('scroll', () => {
+        const fromBottom = document.documentElement.scrollHeight - (window.scrollY + window.innerHeight);
+        if(fromBottom < 420){ // near bottom -> move up
+          voteBtn.style.top = '18px'; voteBtn.style.right = '18px'; voteBtn.style.bottom = 'auto';
+        } else {
+          voteBtn.style.top = 'auto'; voteBtn.style.bottom = '18px'; voteBtn.style.right = '18px';
+        }
+      });
+    }
+
+    /* ---------- small page flash for milestones ---------- */
+    function flashPage(){
+      document.body.animate([{filter:'brightness(1)'},{filter:'brightness(1.06)'},{filter:'brightness(1)'}],{duration:700});
+    }
+
+    /* ---------- Fun messages ---------- */
+    const funBtn = document.getElementById('funBtn');
+    const funMessageEl = document.getElementById('funMessage');
+    const messages = [
+      "✨ You just shared the good vibes!",
+      "🎉 Thanks — Fatima is grateful!",
+      "😎 Smart move. Vote Fatima.",
+      "🍀 Good luck — see you tomorrow!"
+    ];
+    funBtn.addEventListener('click', () => {
+      const msg = messages[Math.floor(Math.random()*messages.length)];
+      funMessageEl.textContent = msg;
+    });
+
+  </script>
+</body>
+</html>
